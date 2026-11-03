@@ -2,63 +2,31 @@
 
 declare(strict_types=1);
 
-/*|--------------------------------------------------------------------------
- | Cache Engine Configuration
- |--------------------------------------------------------------------------
- |
- | پیکربندی موتور cache — همهٔ کلیدهای مستندشده در `docs/03-engines/cache.md` بخش «پیکربندی».
- |
- |@see https://github.com/Derogaramin/Tavaan-Doc/blob/main/docs/03-engines/cache.md
- */
-
 return [
-    /*| پیش‌فرض موتور (driver/store یا حالت فعال) */
-    'default' => env('CACHE_DEFAULT', 'array'),
+    /*| درایور پیش‌فرض: array | file | redis | memcached | apcu | database */
+    'default' => \getenv('TVN_CACHE_DRIVER') !== false ? \getenv('TVN_CACHE_DRIVER') : 'array',
 
-    /*| لیست درایورها */
-    'drivers' => [
-        'array' => [
-            // پیکربندی درایور array
-            'enabled' => true,
-        ],
-        'file' => [
-            // پیکربندی درایور file
-            'enabled' => true,
-        ],
-        'redis' => [
-            // پیکربندی درایور redis
-            'enabled' => true,
-        ],
-        'memcached' => [
-            // پیکربندی درایور memcached
-            'enabled' => true,
-        ],
-        'apcu' => [
-            // پیکربندی درایور apcu
-            'enabled' => true,
-        ],
-        'database' => [
-            // پیکربندی درایور database
-            'enabled' => true,
-        ],
+    /*| پیشوند کلیدها */
+    'prefix' => \getenv('TVN_CACHE_PREFIX') !== false ? \getenv('TVN_CACHE_PREFIX') : 'tvn:',
+
+    /*| TTL پیش‌فرض (ثانیه) */
+    'default_ttl' => (int) (\getenv('TVN_CACHE_TTL') !== false ? \getenv('TVN_CACHE_TTL') : 3600),
+
+    /*| مسیر فایل برای FileStore */
+    'file_dir' => \getenv('TVN_CACHE_DIR') !== false ? \getenv('TVN_CACHE_DIR') : 'storage/framework/cache',
+
+    /*| تنظیمات tag */
+    'tags' => ['enabled' => true],
+
+    /*| Stampede Protection */
+    'stampede_protection' => [
+        'enabled' => true,
+        'lock_ttl' => 10,
+        'serve_stale' => true,
     ],
 
-    /*| کلید کش (در صورت استفاده) */
-    'prefix' => env('CACHE_PREFIX', 'cache:'),
-
-    /*| تنظیمات لاگ */
-    'log' => [
-        'channel' => env('CACHE_LOG_CHANNEL', 'cache'),
-    ],
-
-    /*| Facade */
-    'facade' => [
-        'name' => 'Cache',
-        'accessor' => 'cache',
-    ],
-
-    /*| سایر کلیدها (طبق مستندات) */
-    'options' => [
-        // TODO: کلیدهای اضافی طبق سند §۶ (پیکربندی)
+    /*| Lock */
+    'lock' => [
+        'default_ttl' => 30,
     ],
 ];

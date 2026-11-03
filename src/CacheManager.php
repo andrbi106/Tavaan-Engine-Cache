@@ -4,74 +4,33 @@ declare(strict_types=1);
 
 namespace Tavaan\Engine\Cache;
 
-use Tavaan\Core\Contracts\Config\RepositoryInterface as Config;
+use Tavaan\Engine\Cache\Contracts\RepositoryInterface;
 
 /**
- * CacheManager — پیاده‌سازی اصلی موتور.
- *
- * @see \Tavaan\Engine\Cache\Contracts\CacheManagerInterface
+ * CacheManager — مدیریت چندین store.
  */
-final class CacheManager implements Contracts\CacheManagerInterface
+final class CacheManager
 {
     /**
-     * @param Config $config پیکربندی موتور
+     * @param array<string, mixed> $config
      */
     public function __construct(
-        private readonly Config $config,
+        private readonly array $config = [],
     ) {
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function store(/* ... */): mixed
+    public function repository(): CacheRepository
     {
-        // TODO: پیاده‌سازی store مطابق مستندات (سند §3 API).
-        return null;
+        return new CacheRepository($this->config);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function driver(/* ... */): mixed
+    public function store(?string $name = null): RepositoryInterface
     {
-        // TODO: پیاده‌سازی driver مطابق مستندات (سند §3 API).
-        return null;
+        return $this->repository()->store($name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function extend(/* ... */): mixed
+    public function lock(string $name, int $ttl = 30, ?string $owner = null): Locks\CacheLock
     {
-        // TODO: پیاده‌سازی extend مطابق مستندات (سند §3 API).
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function tags(/* ... */): mixed
-    {
-        // TODO: پیاده‌سازی tags مطابق مستندات (سند §3 API).
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function lock(/* ... */): mixed
-    {
-        // TODO: پیاده‌سازی lock مطابق مستندات (سند §3 API).
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefaultDriver(/* ... */): mixed
-    {
-        // TODO: پیاده‌سازی getDefaultDriver مطابق مستندات (سند §3 API).
-        return null;
+        return new Locks\CacheLock($name, $ttl, $owner);
     }
 }
