@@ -9,7 +9,7 @@ use Tavaan\Core\Contracts\Console\CommandInterface;
 /**
  * cache:clear command.
  */
-final class Cache_clearCommand implements CommandInterface
+final class CacheClearCommand implements CommandInterface
 {
     public function name(): string
     {
