@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tavaan\Engine\Cache\Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
+use Tavaan\Testing\TestCase;
 use Tavaan\Engine\Cache\CacheRepository;
 use Tavaan\Engine\Cache\Stores\ArrayStore;
 use Tavaan\Engine\Cache\Stores\FileStore;
