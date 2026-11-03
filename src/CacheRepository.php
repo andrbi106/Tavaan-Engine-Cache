@@ -152,4 +152,13 @@ final class CacheRepository implements RepositoryInterface
             default => new ArrayStore($this->config['prefix'] ?? ''),
         };
     }
+
+    /**
+     * lock
+     */
+    public function lock(/* ... */): mixed
+    {
+        // TODO: Implement per docs.
+        return null;
+    }
 }

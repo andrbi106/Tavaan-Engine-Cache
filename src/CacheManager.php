@@ -33,4 +33,37 @@ final class CacheManager
     {
         return new Locks\CacheLock($name, $ttl, $owner);
     }
+
+    /**
+     * driver
+     */
+    public function driver(/* ... */): mixed
+    {
+        // TODO: Implement per docs.
+        return null;
+    }
+    /**
+     * extend
+     */
+    public function extend(/* ... */): mixed
+    {
+        // TODO: Implement per docs.
+        return null;
+    }
+    /**
+     * getDefaultDriver
+     */
+    public function getDefaultDriver(/* ... */): mixed
+    {
+        // TODO: Implement per docs.
+        return null;
+    }
+    /**
+     * tags
+     */
+    public function tags(/* ... */): mixed
+    {
+        // TODO: Implement per docs.
+        return null;
+    }
 }
