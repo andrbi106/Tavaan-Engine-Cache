@@ -158,6 +158,6 @@ final class CacheRepository implements RepositoryInterface
      */
     public function lock(/* ... */): mixed
     {
-        return \$this;
+        return $this;
     }
 }

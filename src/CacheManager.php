@@ -55,7 +55,7 @@ final class CacheManager
      */
     public function getDefaultDriver(/* ... */): mixed
     {
-        return \$this->config['default'] ?? 'array';
+        return $this->config['default'] ?? 'array';
     }
     /**
      * tags
