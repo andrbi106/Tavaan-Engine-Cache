@@ -2,78 +2,63 @@
 
 declare(strict_types=1);
 
-/*
- * تَوان | Tavaan — Cache
- * config/cache.php — پیکربندی حافظهٔ نهان (DOC-060 §7).
+/*|--------------------------------------------------------------------------
+ | Cache Engine Configuration
+ |--------------------------------------------------------------------------
+ |
+ | پیکربندی موتور cache — همهٔ کلیدهای مستندشده در `docs/03-engines/cache.md` بخش «پیکربندی».
+ |
+ |@see https://github.com/Derogaramin/Tavaan-Doc/blob/main/docs/03-engines/cache.md
  */
 
 return [
-    'default' => env_string('TVN_CACHE_DRIVER', 'file'),
+    /*| پیش‌فرض موتور (driver/store یا حالت فعال) */
+    'default' => env('CACHE_DEFAULT', 'array'),
 
-    'stores' => [
+    /*| لیست درایورها */
+    'drivers' => [
         'array' => [
-            'driver' => 'array',
-            'serialize' => false,
+            // پیکربندی درایور array
+            'enabled' => true,
         ],
-
         'file' => [
-            'driver' => 'file',
-            'path' => storage_path('cache/data'),
-            'lock_path' => storage_path('cache/locks'),
-            'permission' => 0664,
+            // پیکربندی درایور file
+            'enabled' => true,
         ],
-
-        'database' => [
-            'driver' => 'database',
-            'connection' => null,          // null = default
-            'table' => 'cache',
-            'lock_table' => 'cache_locks',
-        ],
-
         'redis' => [
-            'driver' => 'redis',
-            'host' => env_string('TVN_REDIS_HOST', '127.0.0.1'),
-            'port' => env_int('TVN_REDIS_PORT', 6379),
-            'password' => env_string('TVN_REDIS_PASSWORD', ''),
-            'database' => env_int('TVN_REDIS_DB', 0),
-            'prefix' => env_string('TVN_CACHE_PREFIX', 'tvn:'),
-            'timeout' => 2.0,
+            // پیکربندی درایور redis
+            'enabled' => true,
         ],
-
         'memcached' => [
-            'driver' => 'memcached',
-            'servers' => [
-                ['host' => env_string('TVN_MEMCACHED_HOST', '127.0.0.1'), 'port' => env_int('TVN_MEMCACHED_PORT', 11211), 'weight' => 100],
-            ],
-            'prefix' => env_string('TVN_CACHE_PREFIX', 'tvn:'),
+            // پیکربندی درایور memcached
+            'enabled' => true,
         ],
-
         'apcu' => [
-            'driver' => 'apcu',
-            'prefix' => env_string('TVN_CACHE_PREFIX', 'tvn:'),
+            // پیکربندی درایور apcu
+            'enabled' => true,
+        ],
+        'database' => [
+            // پیکربندی درایور database
+            'enabled' => true,
         ],
     ],
 
-    // درایورهای اشتراکی پشتیبانی Tag هستند (namespace-based)
-    'tags' => [
-        'enabled' => true,
-        'prefix' => 'tvn:tag:',
+    /*| کلید کش (در صورت استفاده) */
+    'prefix' => env('CACHE_PREFIX', 'cache:'),
+
+    /*| تنظیمات لاگ */
+    'log' => [
+        'channel' => env('CACHE_LOG_CHANNEL', 'cache'),
     ],
 
-    'lock' => [
-        'timeout' => 5,       // ثانیه پیش‌فرض block
-        'retry' => 100,       // ms بین تلاش‌ها
+    /*| Facade */
+    'facade' => [
+        'name' => 'Cache',
+        'accessor' => 'cache',
     ],
 
-    'stampede_protection' => [
-        'enabled' => true,
-        'lock_ttl' => 10,
-        'serve_stale' => true,
-        'stale_grace' => 60,   // ثانیه اضافه برای نسخهٔ stale
-        'max_wait_retries' => 3,
+    /*| سایر کلیدها (طبق مستندات) */
+    'options' => [
+        // TODO: کلیدهای اضافی طبق سند §۶ (پیکربندی)
     ],
-
-    // 🔒 DoS
-    'max_key_length' => 512,
-    'max_value_size' => 5242880,   // 5MB
 ];
