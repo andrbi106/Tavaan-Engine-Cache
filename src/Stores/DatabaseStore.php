@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tavaan\Engine\Cache\Stores;
 
-use Tavaan\Core\Contracts\Cache\StoreInterface;
-use Tavaan\Core\Contracts\Database\ConnectionInterface;
+use Tavaan\Engine\Cache\Contracts\StoreInterface;
+use Tavaan\Engine\Database\Contracts\ConnectionInterface;
 use Tavaan\Support\Time\Clock;
 
 /**

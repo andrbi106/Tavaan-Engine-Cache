@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tavaan\Engine\Cache\Stores;
 
-use Tavaan\Core\Contracts\Cache\StoreInterface;
+use Tavaan\Engine\Cache\Contracts\StoreInterface;
 
 /**
  * تَوان | Tavaan — Cache

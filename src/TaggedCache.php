@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tavaan\Engine\Cache;
 
-use Tavaan\Core\Contracts\Cache\RepositoryInterface;
-use Tavaan\Core\Contracts\Cache\StoreInterface;
+use Tavaan\Engine\Cache\Contracts\RepositoryInterface;
+use Tavaan\Engine\Cache\Contracts\StoreInterface;
 
 /**
  * تَوان | Tavaan — Cache
@@ -149,12 +149,12 @@ final class TaggedCache implements RepositoryInterface
         return true;
     }
 
-    public function lock(string $name, int $seconds = 0, ?string $owner = null): \Tavaan\Core\Contracts\Cache\LockInterface
+    public function lock(string $name, int $seconds = 0, ?string $owner = null): \Tavaan\Engine\Cache\Contracts\LockInterface
     {
         return $this->repository->lock($this->itemKey($name), $seconds, $owner);
     }
 
-    public function store(?string $name = null): \Tavaan\Core\Contracts\Cache\RepositoryInterface
+    public function store(?string $name = null): \Tavaan\Engine\Cache\Contracts\RepositoryInterface
     {
         return $this;
     }
