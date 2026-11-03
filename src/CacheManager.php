@@ -37,29 +37,30 @@ final class CacheManager
     /**
      * driver
      */
-    public function driver()
+    public function driver(): CacheRepository
     {
-        return null;
+        return $this->repository();
     }
     /**
      * extend
      */
-    public function extend()
+    public function extend(string $driver, callable $callback): self
     {
-        return null;
+        $this->customDrivers[$driver] = $callback;
+        return $this;
     }
     /**
      * getDefaultDriver
      */
-    public function getDefaultDriver()
+    public function getDefaultDriver(): string
     {
-        return $this->config["defaultDriver"] ?? null;
+        return $this->config["default"] ?? ($this->config["defaultDriver"] ?? "array");
     }
     /**
      * tags
      */
-    public function tags()
+    public function tags(array $tags): CacheRepository
     {
-        return null;
+        return $this->repository();
     }
 }
