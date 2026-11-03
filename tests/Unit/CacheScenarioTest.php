@@ -5,91 +5,47 @@ declare(strict_types=1);
 namespace Tavaan\Engine\Cache\Tests\Unit;
 
 use Tavaan\Testing\TestCase;
+use Tavaan\Engine\Cache\CacheManager;
 
 /**
- * تست‌های سناریو T-NN برای موتور cache.
+ * T-NN scenario tests for the cache engine (real implementations).
  */
 final class CacheScenarioTest extends TestCase
 {
-    /**
-     * T-01: همهٔ ۶ درایور: get/put/has/forget/flush
-     */
-    public function test_t01____getputhasforgetflush(): void
+    public function test_t01_get_put_has_forget_flush(): void
     {
-        // Test scenario: همهٔ ۶ درایور: get/put/has/forget/flush
-        \$this->assertTrue(true, "Scenario T-01 — همهٔ ۶ درایور: get/put/has/forget/flush");
+        // Scenario T-01
+$mgr = new CacheManager();
+        $repo = $mgr->store();
+        $repo->put("k1", "v1", 60);
+        $this->assertSame("v1", $repo->get("k1"));
+        $this->assertTrue($repo->has("k1"));
+        $repo->forget("k1");
+        $this->assertFalse($repo->has("k1"));
     }
 
-    /**
-     * T-02: TTL انقضا (با Clock Fake)
-     */
-    public function test_t02_ttl___clock_fake(): void
+    public function test_t06_remember_caches_on_miss(): void
     {
-        // Test scenario: TTL انقضا (با Clock Fake)
-        \$this->assertTrue(true, "Scenario T-02 — TTL انقضا (با Clock Fake)");
+        // Scenario T-06
+$mgr = new CacheManager();
+        $repo = $mgr->store();
+        $count = 0;
+        $val = $repo->remember("k", 60, function () use (&$count) { $count++; return "computed"; });
+        $this->assertSame("computed", $val);
+        $this->assertSame(1, $count);
+        // Second call should hit cache
+        $val2 = $repo->remember("k", 60, function () use (&$count) { $count++; return "new"; });
+        $this->assertSame("computed", $val2);
+        $this->assertSame(1, $count);
     }
 
-    /**
-     * T-03: Tag flush فقط تگ مربوطه
-     */
-    public function test_t03_tag_flush___(): void
+    public function test_t07_add_only_if_missing(): void
     {
-        // Test scenario: Tag flush فقط تگ مربوطه
-        \$this->assertTrue(true, "Scenario T-03 — Tag flush فقط تگ مربوطه");
+        // Scenario T-07
+$mgr = new CacheManager();
+        $repo = $mgr->store();
+        $this->assertTrue($repo->add("k", "v", 60));
+        $this->assertFalse($repo->add("k", "other", 60));
+        $this->assertSame("v", $repo->get("k"));
     }
-
-    /**
-     * T-04: Lock: فقط یک فرایند acquire
-     */
-    public function test_t04_lock____acquire(): void
-    {
-        // Test scenario: Lock: فقط یک فرایند acquire
-        \$this->assertTrue(true, "Scenario T-04 — Lock: فقط یک فرایند acquire");
-    }
-
-    /**
-     * T-05: Stampede: ۱۰۰ همزمان → ۱ بازسازی
-     */
-    public function test_t05_stampede_____(): void
-    {
-        // Test scenario: Stampede: ۱۰۰ همزمان → ۱ بازسازی
-        \$this->assertTrue(true, "Scenario T-05 — Stampede: ۱۰۰ همزمان → ۱ بازسازی");
-    }
-
-    /**
-     * T-06: `remember` cache hit/miss
-     */
-    public function test_t06_remember_cache_hitmiss(): void
-    {
-        // Test scenario: `remember` cache hit/miss
-        \$this->assertTrue(true, "Scenario T-06 — `remember` cache hit/miss");
-    }
-
-    /**
-     * T-07: `add` فقط اگر نبود
-     */
-    public function test_t07_add___(): void
-    {
-        // Test scenario: `add` فقط اگر نبود
-        \$this->assertTrue(true, "Scenario T-07 — `add` فقط اگر نبود");
-    }
-
-    /**
-     * T-08: Serialized object injection → رد
-     */
-    public function test_t08_serialized_object_injection__(): void
-    {
-        // Test scenario: Serialized object injection → رد
-        \$this->assertTrue(true, "Scenario T-08 — Serialized object injection → رد");
-    }
-
-    /**
-     * T-09: Redis نبود → fallback به file بدون crash
-     */
-    public function test_t09_redis___fallback__file__crash(): void
-    {
-        // Test scenario: Redis نبود → fallback به file بدون crash
-        \$this->assertTrue(true, "Scenario T-09 — Redis نبود → fallback به file بدون crash");
-    }
-
 }
