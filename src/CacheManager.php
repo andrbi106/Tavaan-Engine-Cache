@@ -37,28 +37,28 @@ final class CacheManager
     /**
      * driver
      */
-    public function driver(/* ... */): mixed
+    public function driver()
     {
         return null;
     }
     /**
      * extend
      */
-    public function extend(/* ... */): mixed
+    public function extend()
     {
         return null;
     }
     /**
      * getDefaultDriver
      */
-    public function getDefaultDriver(/* ... */): mixed
+    public function getDefaultDriver()
     {
-        return $this->config['default'] ?? 'array';
+        return $this->config["defaultDriver"] ?? null;
     }
     /**
      * tags
      */
-    public function tags(/* ... */): mixed
+    public function tags()
     {
         return null;
     }

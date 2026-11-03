@@ -156,7 +156,7 @@ final class CacheRepository implements RepositoryInterface
     /**
      * lock
      */
-    public function lock(/* ... */): mixed
+    public function lock(?string $mode = null): self
     {
         return $this;
     }
