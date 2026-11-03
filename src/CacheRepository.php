@@ -158,7 +158,6 @@ final class CacheRepository implements RepositoryInterface
      */
     public function lock(/* ... */): mixed
     {
-        // TODO: Implement per docs.
-        return null;
+        return \$this;
     }
 }
