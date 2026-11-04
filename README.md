@@ -2,6 +2,8 @@
 
 > **حافظه نهان** — موتور Cache در فریمورک تَوان
 
+این موتور از کلاس پایهٔ `Engine` (در [Tavaan-Engine-Core](https://github.com/andrbi106/Tavaan-Engine-Core)) ارث می‌برد.
+
 ## مشخصات
 
 | فیلد | مقدار |
@@ -11,78 +13,64 @@
 | عنوان فارسی | حافظه نهان |
 | نسخه | `0.1.0` |
 | namespace | `Tavaan\Engine\Cache` |
-| نوع | `engine` |
-| Facade | `Cache` (accessor: `cache`) |
+| کلاس موتور | `Tavaan\Engine\Cache\CacheEngine` |
+| Facade | Cache (`cache`) |
 
-## قراردادها (Contracts)
+## کلاس موتور
 
-این موتور قراردادهای زیر را ارائه می‌دهد:
+```php
+namespace Tavaan\Engine\Cache;
 
-- `Tavaan\Engine\Cache\Contracts\LockInterface`
-- `Tavaan\Engine\Cache\Contracts\LockProviderInterface`
-- `Tavaan\Engine\Cache\Contracts\RepositoryInterface`
-- `Tavaan\Engine\Cache\Contracts\StoreInterface`
+use Tavaan\EngineCore\Engine as BaseEngine;
+use Tavaan\EngineCore\Contracts\EngineManifestInterface;
 
-## خطاها (Exceptions)
+final class CacheEngine extends BaseEngine
+{
+    public function __construct(EngineManifestInterface $manifest)
+    {
+        parent::__construct($manifest);
+    }
 
-- `Tavaan\Engine\Cache\Exceptions\LockTimeoutException`
+    public function register(ContainerInterface $container): void
+    {
+        parent::register($container);
+        // bindingهای اختصاصی موتور
+    }
 
-## Facadeها
+    public function boot(): void
+    {
+        parent::boot();
+    }
+}
+```
 
-- `Tavaan\Engine\Cache\Facades\Cache`
+**فایل:** `src/CacheEngine.php`
 
-## کلاس‌های اصلی
+## وابستگی‌ها
 
-- `src/CacheManager.php`
-- `src/CacheRepository.php`
-- `src/CacheServiceProvider.php`
-- `src/Console/CacheClearCommand.php`
-- `src/Locks/CacheLock.php`
-- `src/Stores/ApcuStore.php`
-- `src/Stores/ArrayStore.php`
-- `src/Stores/DatabaseStore.php`
-- `src/Stores/FileStore.php`
-- `src/Stores/MemcachedStore.php`
-- `src/Stores/RedisStore.php`
-- `src/TaggedCache.php`
+**موتورهای مورد‌نیاز:** `config`, `event`
 
 ## Service Providerها
 
 - `Tavaan\Engine\Cache\CacheServiceProvider`
 
-## وابستگی‌ها
-
-**موتورهای مورد‌نیاز:**
-
-- `config`
-- `event`
-
 ## دستورات CLI
 
 - `cache:clear`
 
-## پیکربندی
+## سه درگاه ارتباط با سایر موتورها
 
-- فایل پیکربندی: `config/cache.php`
-- کلید: `cache`
+| درگاه | الگو | متدهای convenience |
+|---|---|---|
+| Container | pull-based DI | `make()`, `bound()` |
+| Events | pub/sub | `dispatch()`, `listen()` |
+| EngineBus | point-to-point RPC | `call()`, `offer()` |
 
 ## نصب
 
 ```bash
 git clone https://github.com/andrbi106/Tavaan-Engine-Cache.git
 ```
-
-این موتور بخشی از فریمورک تَوان است و معمولاً به‌صورت مستقیم نصب نمی‌شود،
-بلکه توسط [Tavaan-Core](https://github.com/andrbi106/Tavaan-Core) مدیریت می‌شود.
-
-## روابط با سایر مخازن
-
-| مخزن | نقش |
-|---|---|
-| **`andrbi106/Tavaan-Engine-Cache`** (این مخزن) | موتور Cache |
-| `andrbi106/Tavaan-Engine-Core` | ساختار پایه + درگاه ارتباط موتورها |
-| `andrbi106/Tavaan-Core` | اسکلت اپلیکیشن + همهٔ موتورها |
-| `Derogaramin/Tavaan-Framework` | فریمورک مادر (monorepo) |
 
 ## مجوز
 
